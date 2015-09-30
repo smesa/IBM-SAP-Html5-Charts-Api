@@ -37,6 +37,8 @@ function createStockChart(data,$scope){
         "#999999", "#333333", "#990000"
     ];
 
+    var bullets = ["round", "square", "triangleUp", "triangleDown", "bubble","round", "square", "triangleUp", "triangleDown",];
+
     var unit = [];
 
     var charts = [];
@@ -60,6 +62,7 @@ function createStockChart(data,$scope){
 		value.categoryvalue = value.categoryvalue.substring(0, 4) + '-' + value.categoryvalue.substring(4, 6) + '-' + value.categoryvalue.substring(6, 8)
 	})
 
+    //AmCharts.theme = AmCharts.themes.dark;
 
 	var chart 							= new AmCharts.AmStockChart();
 	chart.language						= "es";
@@ -115,10 +118,12 @@ function createStockChart(data,$scope){
 			titulo = titulo + ',' + graph.chartdesc;
 		}
 
+        var randomColor = colors[i];
+
 	    // adiciono los ejes
 	    window["valueAxis" + i] 						= new AmCharts.ValueAxis();
-	    window["valueAxis" + i].axisColor 				= colors[i];
-	    window["valueAxis" + i].color 					= colors[i];
+	    window["valueAxis" + i].axisColor 				= randomColor;
+	    window["valueAxis" + i].color 					= randomColor;
 	    window["valueAxis" + i].offset 					= offSet;
 	    window["valueAxis" + i].unit 					= graph.chartunit;
 	    window["valueAxis" + i].max						= parseInt(graph.chartmax);
@@ -133,13 +138,13 @@ function createStockChart(data,$scope){
 	    window["graph" + i].valueField 						= "value"+i;
 	    window["graph" + i].title 							= graph.chartdesc;
 	    window["graph" + i].useDataSetColors 				= false;
-	    window["graph" + i].lineColor 						= colors[i];
-	    window["graph" + i].bullet 							= "round";
-	    window["graph" + i].bulletBorderColor 				= "#FFFFFF";
+	    window["graph" + i].lineColor 						= randomColor;
+	    window["graph" + i].bullet 							= bullets[i];
+	    window["graph" + i].bulletBorderColor 				= randomColor;
 	    window["graph" + i].bulletBorderAlpha 				= 1;
 	    window["graph" + i].balloonFunction					= adjustBalloonText;
 	    window["graph" + i].compareGraphBullet 				= "round";
-	    window["graph" + i].compareGraphBulletBorderColor 	= "#FFFFFF";
+	    window["graph" + i].compareGraphBulletBorderColor 	= randomColor;
 	    window["graph" + i].compareGraphBulletBorderAlpha 	= 1;
 	    window["graph" + i].valueAxis 						= window["valueAxis" + i];
 	    window["graph" + i].showHandOnHover					= true;
@@ -156,117 +161,6 @@ function createStockChart(data,$scope){
 
 	})
 
-
-    // add first value axes
-    /*var valueAxis1 						= new AmCharts.ValueAxis();
-    valueAxis1.axisColor 				= colors[0];
-    valueAxis1.color 					= colors[0];
-    valueAxis1.offset 					= 40;
-    valueAxis1.unit 					= unit[0];
-    valueAxis1.max						= 105;
-    valueAxis1.min						= 55;
-    valueAxis1.maximum					= 105;
-    valueAxis1.minimum					= 55;
-    valueAxis1.fontSize					= 9;
-    stockPanel.addValueAxis(valueAxis1);    
-
-    // add second value axes
-    var valueAxis2 						= new AmCharts.ValueAxis();
-    valueAxis2.axisColor 				= colors[1];
-    valueAxis2.color 					= colors[1];
-    valueAxis2.offset 					= 110;
-    valueAxis2.unit 					= unit[1];
-    valueAxis2.max						= 180;
-    valueAxis2.min						= 50;
-    valueAxis2.maximum					= 180;
-    valueAxis2.minimum					= 50;
-    valueAxis2.baseValue				= 50;
-    valueAxis2.fontSize					= 9;
-
-    stockPanel.addValueAxis(valueAxis2);
-
-
-    // add second value axes
-    var valueAxis3 						= new AmCharts.ValueAxis();
-    valueAxis3.axisColor 				= colors[2];
-    valueAxis3.color 					= colors[2];
-    valueAxis3.offset 					= 180	;
-    valueAxis3.unit 					= unit[2];
-    valueAxis3.max						= 180;
-    valueAxis3.min						= 55;
-    valueAxis3.maximum					= 180;
-    valueAxis3.minimum					= 55;
-    valueAxis3.fontSize					= 9;
-
-    stockPanel.addValueAxis(valueAxis3);*/
-
-
-    // graph of first stock panel
-    /*var graph1 								= new AmCharts.StockGraph();
-    graph1.valueField 						= "value0";
-    graph1.title 							= charts[0];
-    graph1.useDataSetColors 				= false;
-    graph1.lineColor 						= colors[0];
-    graph1.bullet 							= "round";
-    graph1.bulletBorderColor 				= "#FFFFFF";
-    graph1.bulletBorderAlpha 				= 1;
-    graph1.balloonFunction					= adjustBalloonText;
-    graph1.compareGraphBullet 				= "round";
-    graph1.compareGraphBulletBorderColor 	= "#FFFFFF";
-    graph1.compareGraphBulletBorderAlpha 	= 1;
-    graph1.valueAxis 						= valueAxis1;
-    graph1.showHandOnHover					= true;
-    graph1.includeInMinMax					= true;
-    graph1.showAllValueLabels				= true;
-    graph1.showAllValueLabels				= true;
-    graph1.labelPosition					= "bottom";
-    graph1.labelText						= "[[value]]"
-    stockPanel.addStockGraph(graph1);
-
-    // graph of second stock panel
-    var graph2 								= new AmCharts.StockGraph();
-    graph2.valueField 						= "value1";
-    graph2.title 							= charts[1];
-    graph2.useDataSetColors 				= false;
-    graph2.lineColor 						= colors[1];
-    graph2.bullet 							= "diamond";
-    graph2.bulletBorderColor 				= "#FFFFFF";
-    graph2.bulletBorderAlpha 				= 1;
-    graph2.hideBulletsCount					= 0;
-    graph2.balloonFunction					= adjustBalloonText;
-    graph2.compareGraphBulletBorderColor 	= "#FFFFFF";
-    graph2.compareGraphBulletBorderAlpha 	= 1;
-    graph2.valueAxis 						= valueAxis2;
-    graph2.showHandOnHover					= true;
-    graph2.includeInMinMax					= true;
-    graph2.showAllValueLabels				= true;
-    graph2.labelPosition					= "bottom";
-    graph2.labelText						= "[[value]]"
-    stockPanel.addStockGraph(graph2);
-
-
-    // graph of second stock panel
-    var graph3 								= new AmCharts.StockGraph();
-    graph3.valueField 						= "value2";
-    graph3.title 							= charts[2];
-    graph3.useDataSetColors 				= false;
-    graph3.lineColor 						= colors[2];
-    graph3.bullet 							= "square";
-    graph3.bulletBorderColor 				= "#FFFFFF";
-    graph3.bulletBorderAlpha 				= 1;
-    graph3.balloonFunction					= adjustBalloonText;
-    graph3.compareGraphBullet 				= "square";
-    graph3.compareGraphBulletBorderColor 	= "#FFFFFF";
-    graph3.compareGraphBulletBorderAlpha 	= 2;
-    graph3.bulletSize						= 8;
-    graph3.valueAxis 						= valueAxis3;
-    graph3.showHandOnHover					= true;
-    graph3.includeInMinMax					= true;
-    graph3.showAllValueLabels				= true;
-    graph3.showAllValueLabels				= true;
-    graph3.labelPosition					= "bottom";
-    graph3.labelText						= "[[value]]"
-    stockPanel.addStockGraph(graph3);*/
 
     // create stock legend                
     var stockLegend1 						= new AmCharts.StockLegend();
@@ -299,7 +193,7 @@ function createStockChart(data,$scope){
 
 	var newPanel 							= document.createElement('div');
 	newPanel.id 							= 'panel'+data.group;
-	newPanel.className 						= 'panel panel-default';
+	newPanel.className 						= 'panel panel-primary';
 	$("body").append(newPanel);
 
 	var newHeading 							= document.createElement('div');
@@ -310,7 +204,7 @@ function createStockChart(data,$scope){
 	var newTitle							= document.createElement('h3');
 	newTitle.id 							= 'title'+data.group;
 	newTitle.className 						= 'panel-title';
-	newTitle.innerHTML						= titulo;
+	newTitle.innerHTML						= '<center>' + titulo + '</center>';
 	$('#' + newHeading.id ).append(newTitle)
 
 	var newBody 							= document.createElement('div');
@@ -362,6 +256,7 @@ function createStockChart(data,$scope){
 		//if(a < 0){
 			used.push(value.categoryvalue);
 			var newTheadth								= document.createElement('th');
+            newTheadth.className                        = 'info';
 			newTheadth.innerHTML						= '<center>'+value.categoryvalue+'</center>';
 			$('#' + newTheadtr.id).append(newTheadth);
 		//}		
@@ -390,12 +285,7 @@ function createStockChart(data,$scope){
 				
 	})
 
-
-
-
-
 }
-
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
