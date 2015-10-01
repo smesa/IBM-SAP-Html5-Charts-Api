@@ -3,4 +3,8 @@
   height: 400px;
 }
 
+.amcharts-export-menu .export-main > a, .amcharts-export-menu .export-drawing > a, .amcharts-export-menu .export-delayed-capturing > a {
+  background-color: #131415 !important;
+}
+
 

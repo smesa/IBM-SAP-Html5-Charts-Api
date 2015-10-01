@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('appAngularApp', ['ngAnimate','ngCookies','ngResource','ngRoute','ngSanitize','ngTouch'])
+  .module('appAngularApp', ['ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/:id', {
