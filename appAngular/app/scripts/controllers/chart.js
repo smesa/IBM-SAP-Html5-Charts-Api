@@ -8,23 +8,41 @@
  * Controller of the appAngularApp
  */
 angular.module('appAngularApp')
-  .controller('ChartCtrl', function ($scope,$routeParams,$http) {
+  .controller('ChartCtrl', function ($scope,$routeParams,$http,localStorageService) {
 
   	// Recupero parametro id
   	$scope.idchart = $routeParams.id;
 
-  	// Url del servicio
-  	var sURL  = 'http://173.193.125.74:8000/sap/bc/ibmishc/abap_charts?idchart=' + $scope.idchart;
-	
-	// llamo servicio para recuperar la data
-	$http.get( sURL ).
-		success(function(data){
 
-			angular.forEach(data, function(item){
-				createStockChart(item,$scope)
-			})
+  	// Consulto en los datos locales si existe el registro
+  	$scope.data    = localStorageService.get($scope.idchart);
+
+  	// Valido si tuvo resultados
+  	if($scope.data != null){ // Si tuvo lo saco de la base de datos local
+
+  		angular.forEach($scope.data, function(item){
+			createStockChart(item,$scope)
+		})
+
+
+  	}else{ // Si no consulto desde el servicio
+
+  		// Url del servicio
+	  	var sURL  = 'http://173.193.125.74:8000/sap/bc/ibmishc/abap_charts?idchart=' + $scope.idchart;
+		
+		// llamo servicio para recuperar la data
+		$http.get( sURL ).
+			success(function(data){
+
+				// Asigno los datos locales
+				localStorageService.set($scope.idchart,data);
+
+				angular.forEach(data, function(item){
+					createStockChart(item,$scope)
+				})
 
 		 })
+  	}  	
 	
   });
 

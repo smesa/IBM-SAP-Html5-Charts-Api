@@ -9,8 +9,8 @@
  * Main module of the application.
  */
 angular
-  .module('appAngularApp', ['ngRoute'])
-  .config(function ($routeProvider) {
+  .module('appAngularApp', ['ngRoute', 'LocalStorageModule'])
+  .config(function ($routeProvider,localStorageServiceProvider) {
     $routeProvider
       .when('/:id', {
         templateUrl: 'views/chart.html',
@@ -20,4 +20,9 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+      localStorageServiceProvider
+      .setPrefix('IBM-Charts')
+      .setStorageType('sessionStorage')
+      .setNotify(true, true);
   });
