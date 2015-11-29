@@ -28,8 +28,8 @@ angular.module('appAngularApp')
   	}else{ // Si no consulto desde el servicio
 
   		// Url del servicio
-	  	var sURL  = 'http://173.193.125.74:8000/sap/bc/ibmishc/abap_charts?idchart=' + $scope.idchart;
-		
+	  	var sURL  = 'http://ex3healthcare.softlayer.com:8000/sap/bc/ibmishc/abap_charts?sap-client=110&idchart=' + $scope.idchart;
+
 		// llamo servicio para recuperar la data
 		$http.get( sURL ).
 			success(function(data){
@@ -42,8 +42,8 @@ angular.module('appAngularApp')
 				})
 
 		 })
-  	}  	
-	
+  	}
+
   });
 
 
@@ -88,17 +88,28 @@ function createStockChart(data,$scope){
     chart.dataDateFormat				= "YYYY-MM-DD";
     chart.export						= amExport;
 
+    var datas = [];
+    var i = 0;
+    angular.forEach(data.graphs, function(graph){
+      datas.push({fromField: 'value'+i, toField: 'value'+i})
+      i++;
+    })
+
     // create data sets first
     var dataSet1 						= new AmCharts.DataSet();
-    dataSet1.fieldMappings 				= [
+    dataSet1.fieldMappings = datas;
+    /*dataSet1.fieldMappings 				= [
         {fromField: "value0", toField: "value0"},
         {fromField: "value1", toField: "value1"},
-        {fromField: "value2", toField: "value2"}
-    ];
+        {fromField: "value2", toField: "value2"},
+        {fromField: "value2", toField: "value3"},
+        {fromField: "value2", toField: "value4"},
+        {fromField: "value2", toField: "value5"},
+    ];*/
 
     dataSet1.dataProvider 				= data.values;
     dataSet1.categoryField 				= "categoryvalue";
-      
+
     // set data sets to the chart
     chart.dataSets 						= [dataSet1];
 
@@ -149,7 +160,7 @@ function createStockChart(data,$scope){
 	    window["valueAxis" + i].maximum					= parseInt(graph.chartmax);
 	    window["valueAxis" + i].minimum					= parseInt(graph.chartmin);
 	    window["valueAxis" + i].fontSize				= 9;
-	    stockPanel.addValueAxis(window["valueAxis" + i]);  
+	    stockPanel.addValueAxis(window["valueAxis" + i]);
 
 
         window["graph" + i]									= new AmCharts.StockGraph();
@@ -171,7 +182,7 @@ function createStockChart(data,$scope){
 	    window["graph" + i].showAllValueLabels				= true;
 	    window["graph" + i].labelPosition					= "bottom";
     	window["graph" + i].labelText						= "[[value]]"
-    	stockPanel.addStockGraph(window["graph" + i]);					
+    	stockPanel.addStockGraph(window["graph" + i]);
 
 
 	    offSet = offSet + 70;
@@ -180,12 +191,12 @@ function createStockChart(data,$scope){
 	})
 
 
-    // create stock legend                
-    var stockLegend1 						= new AmCharts.StockLegend();
-    stockLegend1.useGraphSettings			= true;
-    stockLegend1.align                   	= "center";
+    // create stock legend
+    var stockLegend1 						    = new AmCharts.StockLegend();
+    stockLegend1.useGraphSettings		= true;
+    stockLegend1.align              = "center";
     stockLegend1.position 					= "Bottom";
-    stockLegend1.valueFunction     			= stockLegendValue;
+    stockLegend1.valueFunction     	= stockLegendValue;
     stockPanel.stockLegend 					= stockLegend1;
 
 
@@ -195,9 +206,9 @@ function createStockChart(data,$scope){
 
     // OTHER SETTINGS ////////////////////////////////////
     var sbsettings 							= new AmCharts.ChartScrollbarSettings();
-    sbsettings.graph 						= window["graph" + 0];
+    //sbsettings.graph 						= window["graph" + 0];
     chart.chartScrollbarSettings 			= sbsettings;
-    
+
     // CURSOR
     var cursorSettings 						= new AmCharts.ChartCursorSettings();
     cursorSettings.bulletSize				= 6;
@@ -235,7 +246,7 @@ function createStockChart(data,$scope){
 	newDiv.className 						= 'chartdiv';
 	$('#' + newBody.id).append(newDiv);
 
-	chart.write(newDiv.id);	
+	chart.write(newDiv.id);
 
 
 	// Armo tabla con valores de datos
@@ -277,14 +288,14 @@ function createStockChart(data,$scope){
             newTheadth.className                        = 'info';
 			newTheadth.innerHTML						= '<center>'+value.categoryvalue+'</center>';
 			$('#' + newTheadtr.id).append(newTheadth);
-		//}		
+		//}
 	})
 
 	var i = 0;
 	angular.forEach(data.graphs, function(graph){
 
 		var newTheadtr									= document.createElement('tr');
-		newTheadtr.id 									= 'tbodytr'+graph.chartname;		
+		newTheadtr.id 									= 'tbodytr'+graph.chartname;
 		$('#' + newTbody.id).append(newTheadtr);
 
 		var newTheadth									= document.createElement('th');
@@ -300,7 +311,7 @@ function createStockChart(data,$scope){
 
 		i++;
 
-				
+
 	})
 
 }
@@ -322,11 +333,10 @@ function adjustBalloonText(graphDataItem, graph){
 }
 
 function stockLegendValue(graphDataItem){
-    return ""  
+    return ""
 
 }
 
 	function chartClick (event) {
 	    console.log("Clicked!");
 	}
-
